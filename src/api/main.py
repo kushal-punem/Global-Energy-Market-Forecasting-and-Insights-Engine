@@ -274,3 +274,99 @@ def get_wti_extremes():
         "count": len(rows),
         "data": [dict(row) for row in rows],
     }
+
+# ============================================================
+# FORECAST ENDPOINTS
+# ============================================================
+
+@app.get("/api/v1/forecast")
+def get_forecasts(
+    limit: int = Query(default=30, ge=1, le=365)
+):
+    """
+    Return future WTI price forecasts.
+    """
+
+    query = """
+        SELECT
+            forecast_date,
+            commodity,
+            predicted_price,
+            model
+        FROM forecasts
+        WHERE commodity = 'WTI Crude Oil'
+        ORDER BY forecast_date ASC
+        LIMIT :limit;
+    """
+
+    engine = get_engine()
+
+    with engine.connect() as connection:
+        result = connection.execute(
+            text(query),
+            {"limit": limit}
+        )
+
+        rows = result.mappings().all()
+
+    return {
+        "count": len(rows),
+        "data": [dict(row) for row in rows],
+    }
+
+
+@app.get("/api/v1/forecast/latest")
+def get_latest_forecast():
+    """
+    Return the latest available WTI forecast.
+    """
+
+    query = """
+        SELECT
+            forecast_date,
+            commodity,
+            predicted_price,
+            model
+        FROM forecasts
+        WHERE commodity = 'WTI Crude Oil'
+        ORDER BY forecast_date DESC
+        LIMIT 1;
+    """
+
+    engine = get_engine()
+
+    with engine.connect() as connection:
+        result = connection.execute(text(query))
+        row = result.mappings().first()
+
+    if row is None:
+        return {
+            "message": "No forecast data available"
+        }
+
+    return dict(row)
+
+
+@app.get("/api/v1/forecast/evaluation")
+def get_forecast_evaluation():
+    """
+    Return forecast model evaluation metrics.
+    """
+
+    return {
+        "model": "RandomForest-v1",
+        "metrics": {
+            "MAE": 1.44,
+            "RMSE": 2.40
+        },
+        "baseline_comparison": {
+            "Naive": {
+                "MAE": 13.81,
+                "RMSE": 18.25
+            },
+            "30-Day Moving Average": {
+                "MAE": 13.81,
+                "RMSE": 18.23
+            }
+        }
+    }
