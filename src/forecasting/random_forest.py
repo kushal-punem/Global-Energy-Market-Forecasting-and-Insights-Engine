@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from src.forecasting.features import load_wti_data, create_features
+from src.forecasting.arima import load_wti_data
+from src.forecasting.features import create_features
 
 
 def main():
