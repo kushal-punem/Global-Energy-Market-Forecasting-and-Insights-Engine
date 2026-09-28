@@ -496,15 +496,15 @@ docker ps --filter "name=global-energy-api"
 curl http://localhost:8000/health
 ```
 
----
+<!-- --- -->
 
-## Production Roadmap
+<!-- ## Production Roadmap
 
 - [ ] **Multi-Commodity Expansion**: Ingest Brent Crude (`PET.RBRTE.D`), Henry Hub Natural Gas (`NG.RNGC1.D`), and refined products (Diesel, Gasoline).
 - [ ] **Exogenous Macro Features**: Integrate interest rates (US 10-Year Treasury), DXY Dollar Index, OPEC production quotas, and crude inventory levels (EIA Weekly Petroleum Status Report).
 - [ ] **Deep Learning Models**: Benchmark against Temporal Fusion Transformers (TFT), N-BEATS, and PatchTST.
 - [ ] **Workflow Orchestration**: Scheduled daily runs via Apache Airflow or Prefect.
-- [ ] **Real-time Alerting**: Automated webhooks (Slack/Teams) on anomalous price volatility or validation errors.
+- [ ] **Real-time Alerting**: Automated webhooks (Slack/Teams) on anomalous price volatility or validation errors. -->
 
 ---
 
